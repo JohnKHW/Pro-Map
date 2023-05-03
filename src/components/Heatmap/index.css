@@ -1,28 +1,15 @@
-:root {
-  --threshold-color: #00ff00;
-}
-
-.radial-heatmap {
+.heatmap-container {
   position: relative;
-  width: 400px;
-  height: 400px;
-}
-
-.radial-heatmap svg {
   width: 100%;
   height: 100%;
 }
 
-.radial-heatmap circle {
-  transition: fill 0.3s ease;
-}
-.heatmap-circle-value {
-  mix-blend-mode: multiply;
-  fill: var(--threshold-color);
-}
-
-.heatmap-circle-background,
-.heatmap-circle-value-mask {
-  /* transparent */
-  fill: rgba(0, 0, 0, 0);
+.heatmap-canvas {
+  overflow: hidden;
+  border-radius: 50%;
+  width: 250px;
+  height: 250px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
 }
