@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Heatmap from "./components/Heatmap";
+import Camera from "./components/Camera";
+import ChartResult from "./components/ChartResult";
+import { Col, Container, Row } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
+const App = () => {
+  const [expressions, setExpressions] = useState([]);
+
+  const handleOnDetectFace = (newValue) => {
+    setExpressions(newValue);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Container>
+        <Row>
+          <Col>
+            <Camera onDetectFace={handleOnDetectFace} fps={5} />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <ChartResult data={expressions} maxLabels={8} />
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
-}
+};
 
 export default App;
