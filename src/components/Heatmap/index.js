@@ -42,6 +42,7 @@ const HeatmapComponent = (props) => {
 
   const getPositionByValue = (key, value) => {
     const edgePos = tagPos[key];
+    const padding = 0.8;
     if (!edgePos) return { x: 0, y: 0 };
 
     // center is the value 0, edgePos is the value 1
@@ -76,7 +77,7 @@ const HeatmapComponent = (props) => {
 
     const max = 1;
     const min = 0;
-    const radius = 70;
+    const radius = 90;
 
     const config = {
       // only container is required, the rest will be defaults
@@ -141,7 +142,6 @@ const HeatmapComponent = (props) => {
       return true;
     });
 
-    const radius = 70;
     const points = [];
 
     const max = 1;
@@ -155,8 +155,7 @@ const HeatmapComponent = (props) => {
         heatmapInstance.addData({
           x,
           y,
-          value: item[tag],
-          radius,
+          value: item[tag] * 0.7,
         });
       });
     });
