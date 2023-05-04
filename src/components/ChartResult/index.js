@@ -72,14 +72,14 @@ const ChartResult = (props) => {
         },
         {
           label: "Disgusted",
-          data: groupedData.map((data) => data.Disgusted),
+          data: groupedData.map((data) => data.disgusted),
           borderColor: Utils.CHART_COLORS.green,
           backgroundColor: Utils.transparentize(Utils.CHART_COLORS.green, 0.5),
           borderWidth: 2,
         },
         {
           label: "Fearful",
-          data: groupedData.map((data) => data.Fearful),
+          data: groupedData.map((data) => data.fearful),
           borderColor: Utils.CHART_COLORS.orange,
           backgroundColor: Utils.transparentize(Utils.CHART_COLORS.orange, 0.5),
           borderWidth: 2,
