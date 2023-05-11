@@ -1,7 +1,9 @@
+/* eslint-disable no-loop-func */
 import React, { useEffect, useRef, useState } from "react";
-
+import ExcelJs from "exceljs";
 import * as faceapi from "face-api.js";
 
+import { DateTime } from "luxon";
 import "./index.css";
 import { Button, Col, Row } from "react-bootstrap";
 
@@ -127,6 +129,98 @@ const Camera = (props) => {
     setExpression([]);
   };
 
+  const worksheet = (workbook, data, name) => {
+    const sheet = workbook.addWorksheet(name);
+    const headers = [];
+    const rows = [];
+    const startTime = data[0].timestamp;
+    data?.forEach((_d, i) => {
+      const row = [];
+      Object.keys(_d).forEach((key) => {
+        if (!headers.includes(key) && i === 0) {
+          headers.push({ name: key });
+        }
+        if (key === "timestamp") {
+          // minus startTime to seconds
+          row.push((_d[key] - startTime) / 1000);
+        } else {
+          row.push(_d[key]);
+        }
+      });
+      rows.push(row);
+    });
+    sheet.addTable({
+      name: name, // 表格內看不到的，算是key值，讓你之後想要針對這個table去做額外設定的時候，可以指定到這個table
+      ref: "A1", // 從A1開始
+      columns: headers,
+      rows,
+    });
+  };
+
+  const downloadExcel = (expressions = []) => {
+    console.log("expression", expression);
+    const workbook = new ExcelJs.Workbook();
+
+    const timestampSheet = worksheet(workbook, expression, "By Timestamp");
+    console.log("timestampSheet", groupingDataBySecond(expression));
+    const secondSheet = worksheet(
+      workbook,
+      groupingDataBySecond(expression),
+      "By Second"
+    );
+    workbook.xlsx.writeBuffer().then((content) => {
+      const link = document.createElement("a");
+      const blobData = new Blob([content], {
+        type: "application/vnd.ms-excel;charset=utf-8;",
+      });
+      link.download = "Expression Result.xlsx";
+      link.href = URL.createObjectURL(blobData);
+      link.click();
+    });
+  };
+
+  const groupingDataBySecond = (_data) => {
+    const result = [];
+    let startIdx = 0;
+    let currSec = 0;
+    // average data by second
+    for (let i = 0; i < _data.length; i++) {
+      const deltaTime = (_data[i].timestamp - _data[startIdx].timestamp) / 1000;
+      if (deltaTime >= 1) {
+        const groupData = _data.slice(startIdx, i);
+        const data = groupData.reduce((acc, cur) => {
+          const reuslt = {};
+          Object.keys(acc).forEach((key) => {
+            if (!reuslt[key]) {
+              reuslt[key] = acc[key] + cur[key];
+            }
+          });
+          return reuslt;
+        });
+        // get average
+        Object.keys(data).forEach((key) => {
+          if (key !== "timestamp") {
+            data[key] = data[key] / groupData.length;
+          } else {
+            data[key] = currSec * 1000;
+          }
+        });
+        // get average
+        // Object.keys(data).forEach((key) => {
+        //   if (key !== "timestamp") {
+        //     data[key] = data[key] / data.length;
+        //   } else {
+        //     data[key] = Math.floor(data[key] - _data[0].timestamp);
+        //   }
+        // });
+        result.push({ ...data });
+        startIdx = i;
+        currSec++;
+      }
+    }
+    return result;
+  };
+
   return (
     <>
       <div style={{ textAlign: "center", padding: "10px" }}>
@@ -134,6 +228,16 @@ const Camera = (props) => {
           <Col xs={5}>
             <Button onClick={resetData} variant="outline-danger">
               Reset
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              onClick={() => {
+                downloadExcel(expression);
+              }}
+              variant="outline-primary"
+            >
+              Download
             </Button>
           </Col>
           <Col>
