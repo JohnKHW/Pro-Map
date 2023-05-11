@@ -3,6 +3,13 @@
   width: 100%;
   height: 100%;
 }
+.heatmap {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .heatmap-canvas {
   overflow: hidden;
@@ -12,4 +19,39 @@
   border-color: black;
   border-width: 1px;
   border-style: solid;
+  /* align center */
+
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
+.tags {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.tag{
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffff;
+  text-align: center;
+  text-shadow: 0px 0px 5px #ffffff;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  z-index: 1;
+  background-color: rgba(0,0,0,0.7);
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }

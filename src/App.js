@@ -8,6 +8,15 @@ import HeatmapComponent from "./components/Heatmap";
 
 const App = () => {
   const [expressions, setExpressions] = useState([]);
+  const expressionsTags = [
+    "angry",
+    "disgusted",
+    "fearful",
+    "happy",
+    "sad",
+    "surprised",
+    "neutral",
+  ];
 
   const handleOnDetectFace = (newValue) => {
     setExpressions(newValue);
@@ -23,11 +32,11 @@ const App = () => {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col xs={12} md={8}>
               <ChartResult data={expressions} maxLabels={8} />
             </Col>
             <Col>
-              <HeatmapComponent />
+              <HeatmapComponent data={expressions} keys={expressionsTags} />
             </Col>
           </Row>
         </Container>
