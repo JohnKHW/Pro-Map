@@ -9,13 +9,13 @@ import HeatmapComponent from "./components/Heatmap";
 const App = () => {
   const [expressions, setExpressions] = useState([]);
   const expressionsTags = [
-    "angry",
-    "disgusted",
-    "fearful",
     "happy",
     "sad",
-    "surprised",
+    "disgusted",
+    "fearful",
+    "angry",
     "neutral",
+    "surprised",
   ];
 
   const handleOnDetectFace = (newValue) => {
